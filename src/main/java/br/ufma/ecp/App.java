@@ -31,14 +31,16 @@ public class App
 
     public static void main( String[] args )
     {
-        String fname = "/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
+        //String fname = "/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
+        
+        String fname = args[0];
+
         File file = new File(fname);
 
         String outputFileName = fname.substring(0, fname.lastIndexOf(".")) + ".asm";
+        CodeWriter code = new CodeWriter(outputFileName);
 
         String input = fromFile(file);
-
-        CodeWriter code = new CodeWriter(outputFileName);
         Parser p = new Parser(input);
         while (p.hasMoreCommands()) {
             var command = p.nextCommand();
@@ -57,7 +59,7 @@ public class App
                     break;
                 
                 case POP:
-                    code.writePush(command.args.get(0), Integer.parseInt(command.args.get(1)));
+                    code.writePop(command.args.get(0), Integer.parseInt(command.args.get(1)));
                     break;
 
                 default:
@@ -67,7 +69,7 @@ public class App
     
         } 
         
-        System.out.println(code.codeOutput());
+        //System.out.println(code.codeOutput());
         code.save();
         //CodeWriter code = new CodeWriter();
         //code.setFileName("/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/Add.vm");
