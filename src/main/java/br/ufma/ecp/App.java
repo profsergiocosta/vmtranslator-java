@@ -1,5 +1,8 @@
 package br.ufma.ecp;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collector;
@@ -11,48 +14,31 @@ import java.util.stream.Collectors;
  */
 public class App 
 {
- 
+ //
+
+ private static String fromFile(File file) {        
+
+    byte[] bytes;
+    try {
+        bytes = Files.readAllBytes(file.toPath());
+        String textoDoArquivo = new String(bytes, "UTF-8");
+        return textoDoArquivo;
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return "";
+} 
+
     public static void main( String[] args )
     {
-          String input =  """
-            // This file is part of www.nand2tetris.org
-            // and the book "The Elements of Computing Systems"
-            // by Nisan and Schocken, MIT Press.
-            // File name: projects/07/MemoryAccess/BasicTest/BasicTest.vm
-            
+        String fname = "/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
+        File file = new File(fname);
 
+        String outputFileName = fname.substring(0, fname.lastIndexOf(".")) + ".asm";
 
-            // Executes pop and push commands using the virtual memory segments.
-            push constant 10
-            pop local 0
-            push constant 21
-            push constant 22
-            pop argument 2
-            pop argument 1
-            push constant 36
-            pop this 6
-            push constant 42
-            push constant 45
-            pop that 5
-            pop that 2
-            push constant 510
-            pop temp 6
-            push local 0
-            push that 5
-            add
-            push argument 1
-            sub
-            push this 6
-            push this 6
-            add
-            sub
-            push temp 6
-            add
-         """;
+        String input = fromFile(file);
 
-         input = "push argument 3";
-     
-        CodeWriter code = new CodeWriter();
+        CodeWriter code = new CodeWriter(outputFileName);
         Parser p = new Parser(input);
         while (p.hasMoreCommands()) {
             var command = p.nextCommand();
@@ -82,6 +68,7 @@ public class App
         } 
         
         System.out.println(code.codeOutput());
+        code.save();
         //CodeWriter code = new CodeWriter();
         //code.setFileName("/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/Add.vm");
 

@@ -1,11 +1,19 @@
 package br.ufma.ecp;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class CodeWriter {
 
     private StringBuilder output = new StringBuilder();
     private String moduleName = "Main";
     private int synCount = 0;
+    private String outputFileName;
 
+    public CodeWriter (String fname) {
+        outputFileName = fname;
+    }
 
 void setFileName(String s)
 {
@@ -35,7 +43,7 @@ String registerName(String segment, int index)
 
 void writePush(String seg, int index)
 {
-    if (seg == "constant")
+    if (seg.equals("constant"))
     {
         write("@" + index + " // push " + seg + " " + index);
         write("D=A");
@@ -45,7 +53,7 @@ void writePush(String seg, int index)
         write("@SP");
         write("M=M+1");
     }
-    else if (seg == "static" || seg == "temp" || seg == "pointer")
+    else if (seg.equals("static") || seg.equals("temp") || seg.equals("pointer"))
     {
         write("@" + registerName(seg, index) + " // push " + seg + " " + index);
         write("D=M");
@@ -73,7 +81,7 @@ void writePush(String seg, int index)
 
 void writePop(String seg, int index)
 {  
-    if (seg == "static" || seg == "temp" || seg == "pointer")
+    if (seg.equals("static") || seg.equals("temp") || seg.equals("pointer"))
     {
 
         write("@SP // pop " + seg + " " + index);
@@ -247,5 +255,24 @@ void writeArithmeticLt()
 
     public String codeOutput () {
         return output.toString();
+    }
+
+    public  void save() {
+  
+       
+        FileOutputStream outputStream;
+        try {
+            outputStream = new FileOutputStream(outputFileName);
+       
+            outputStream.write(output.toString().getBytes());
+    
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
