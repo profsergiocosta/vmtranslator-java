@@ -15,7 +15,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-           "args": "/home/sergio//applications/nand2tetris/projects/07/MemoryAccess/BasicTest/BasicTest.vm",
+           "args": "/home/sergio//applications/nand2tetris/projects/07/MemoryAccess/BasicTest/",
             "mainClass": "br.ufma.ecp.App",
             "projectName": "vmtranslator"
         }

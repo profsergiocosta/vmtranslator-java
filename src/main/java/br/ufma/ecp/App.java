@@ -14,22 +14,25 @@ import java.util.stream.Collectors;
  */
 public class App 
 {
- //
+ 
+    private static void translateFile (String filename, CodeWriter code) {
 
- private static String fromFile(File file) {        
-
-    byte[] bytes;
-    try {
-        bytes = Files.readAllBytes(file.toPath());
-        String textoDoArquivo = new String(bytes, "UTF-8");
-        return textoDoArquivo;
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-    return "";
-} 
 
-    public static void main( String[] args )
+    private static String fromFile(File file) {        
+
+        byte[] bytes;
+        try {
+            bytes = Files.readAllBytes(file.toPath());
+            String textoDoArquivo = new String(bytes, "UTF-8");
+            return textoDoArquivo;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    } 
+
+    public static void main_( String[] args )
     {
         //String fname = "/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
         
@@ -74,10 +77,63 @@ public class App
         //CodeWriter code = new CodeWriter();
         //code.setFileName("/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/Add.vm");
 
-      
-        
-
-    
-
     }
+
+
+    public static void main(String[] args) {
+        if (args.length != 1) {
+            System.err.println("Please provide a single file path argument.");
+            System.exit(1);
+        }
+
+        File file = new File(args[0]);
+
+        if (!file.exists()) {
+            System.err.println("The file doesn't exist.");
+            System.exit(1);
+        }
+
+        // we need to compile every file in the directory
+        if (file.isDirectory()) {
+
+            var outputFileName = file.getAbsolutePath() +"/"+ file.getName()+".asm";
+            System.out.println(outputFileName);
+
+            for (File f : file.listFiles()) {
+                if (f.isFile() && f.getName().endsWith(".vm")) {
+
+                    var inputFileName = f.getAbsolutePath();
+                    var pos = inputFileName.indexOf('.');
+                    
+                    
+                    System.out.println("compiling " +  inputFileName);
+                    var input = fromFile(f);
+                    //var parser = new Parser(input.getBytes(StandardCharsets.UTF_8));
+                    //parser.parse();
+                    ///var result = parser.VMOutput();
+                  //  saveToFile(outputFileName, result);
+                }
+
+            }
+        // we only compile the single file
+        } else if (file.isFile()) {
+            if (!file.getName().endsWith(".vm"))  {
+                System.err.println("Please provide a file name ending with .vm");
+                System.exit(1);
+            } else {
+                var inputFileName = file.getAbsolutePath();
+                var pos = inputFileName.indexOf('.');
+                var outputFileName = inputFileName.substring(0, pos) + ".vm";
+                
+                System.out.println("compiling ... " +  inputFileName);
+                var input = fromFile(file);
+               // var parser = new Parser(input.getBytes(StandardCharsets.UTF_8));
+               // parser.parse();
+                //var result = parser.VMOutput();
+                //saveToFile(outputFileName, result);
+                
+            }
+        }
+    }
+
 }
