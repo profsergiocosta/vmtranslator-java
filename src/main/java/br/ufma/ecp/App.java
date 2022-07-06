@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
 public class App 
 {
  
-    private static void translateFile (String filename, CodeWriter code) {
-
-    }
 
     private static String fromFile(File file) {        
 
@@ -32,16 +29,7 @@ public class App
         return "";
     } 
 
-    public static void main_( String[] args )
-    {
-        //String fname = "/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
-        
-        String fname = args[0];
-
-        File file = new File(fname);
-
-        String outputFileName = fname.substring(0, fname.lastIndexOf(".")) + ".asm";
-        CodeWriter code = new CodeWriter(outputFileName);
+    private static void translateFile (File file, CodeWriter code) {
 
         String input = fromFile(file);
         Parser p = new Parser(input);
@@ -71,11 +59,7 @@ public class App
 
     
         } 
-        
-        //System.out.println(code.codeOutput());
-        code.save();
-        //CodeWriter code = new CodeWriter();
-        //code.setFileName("/home/sergio/Google Drive/Arquivados/nand2tetris/projects/07/StackArithmetic/SimpleAdd/Add.vm");
+       
 
     }
 
@@ -88,7 +72,7 @@ public class App
 
         File file = new File(args[0]);
 
-        if (!file.exists()) {
+        if (!file.exists()) {   
             System.err.println("The file doesn't exist.");
             System.exit(1);
         }
@@ -98,6 +82,7 @@ public class App
 
             var outputFileName = file.getAbsolutePath() +"/"+ file.getName()+".asm";
             System.out.println(outputFileName);
+            CodeWriter code = new CodeWriter(outputFileName);
 
             for (File f : file.listFiles()) {
                 if (f.isFile() && f.getName().endsWith(".vm")) {
@@ -107,14 +92,12 @@ public class App
                     
                     
                     System.out.println("compiling " +  inputFileName);
-                    var input = fromFile(f);
-                    //var parser = new Parser(input.getBytes(StandardCharsets.UTF_8));
-                    //parser.parse();
-                    ///var result = parser.VMOutput();
-                  //  saveToFile(outputFileName, result);
+                    translateFile(f,code);
+
                 }
 
             }
+            code.save();
         // we only compile the single file
         } else if (file.isFile()) {
             if (!file.getName().endsWith(".vm"))  {
@@ -123,15 +106,11 @@ public class App
             } else {
                 var inputFileName = file.getAbsolutePath();
                 var pos = inputFileName.indexOf('.');
-                var outputFileName = inputFileName.substring(0, pos) + ".vm";
-                
-                System.out.println("compiling ... " +  inputFileName);
-                var input = fromFile(file);
-               // var parser = new Parser(input.getBytes(StandardCharsets.UTF_8));
-               // parser.parse();
-                //var result = parser.VMOutput();
-                //saveToFile(outputFileName, result);
-                
+                var outputFileName = inputFileName.substring(0, pos) + ".asm";
+                CodeWriter code = new CodeWriter(outputFileName);
+                System.out.println("compiling " +  inputFileName);
+                translateFile(file,code); 
+                code.save();               
             }
         }
     }
