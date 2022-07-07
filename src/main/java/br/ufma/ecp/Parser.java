@@ -13,8 +13,10 @@ public class Parser {
         commands = Arrays.stream(output)
         .map(String::strip)
         .filter(  (s) ->  s.indexOf("//") != 0 && s != "")
+        //.map ( (s) -> s.substring(0, s.indexOf("//")) )
         .map ( (s) ->s.split(" ")  )
         .collect(Collectors.toList());
+
     }
 
     public boolean hasMoreCommands () {
