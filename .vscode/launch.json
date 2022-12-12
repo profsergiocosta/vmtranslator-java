@@ -16,7 +16,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-           "args": "/home/sergio//applications/nand2tetris/projects/08/FunctionCalls/NestedCall",
+           "args": "-b -i C:\\Users\\professor\\Documents\\nand2tetris\\projects\\07\\MemoryAccess\\BasicTest",
             "mainClass": "br.ufma.ecp.App",
             "projectName": "vmtranslator"
         }
