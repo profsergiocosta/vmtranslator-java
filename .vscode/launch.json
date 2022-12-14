@@ -16,7 +16,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-           "args": "-b -i C:\\Users\\professor\\Documents\\nand2tetris\\projects\\07\\MemoryAccess\\BasicTest",
+           "args": "-b -i /home/sergio/apps/nand2tetris/projects/08/FunctionCalls/StaticsTest/",
             "mainClass": "br.ufma.ecp.App",
             "projectName": "vmtranslator"
         }

@@ -33,6 +33,7 @@ public class App {
 
         String input = fromFile(file);
         Parser p = new Parser(input);
+        code.setFileName(file.getName());
         while (p.hasMoreCommands()) {
             var command = p.nextCommand();
             switch (command.type) {
@@ -166,7 +167,7 @@ public class App {
 
                             var inputFileName = f.getAbsolutePath();
                             var pos = inputFileName.indexOf('.');
-
+                            
                             System.out.println("compiling " + inputFileName);
                             translateFile(f, code);
 
